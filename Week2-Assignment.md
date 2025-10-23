@@ -1,74 +1,96 @@
 # 🚂 Week 2: Express.js – Server-Side Framework
 
 ## 🚀 Objective
-Build a RESTful API using Express.js that implements standard CRUD operations, proper routing, middleware implementation, and error handling.
+Build a RESTful API using Express.js that implements standard CRUD operations, proper routing, middleware, and error handling.
 
-## 📂 Tasks
+---
 
-### Task 1: Express.js Setup
-- Initialize a new Node.js project
-- Install Express.js and required dependencies
-- Create a basic Express server that listens on port 3000
-- Implement a "Hello World" route at the root endpoint
+## 📂 Project Overview
+This project is a **Product Management API** built with Node.js and Express.js.  
+It supports the following functionality:
 
-### Task 2: RESTful API Routes
-- Create a resource called `products` with the following fields:
-  - `id` (unique identifier)
-  - `name` (string)
-  - `description` (string)
-  - `price` (number)
-  - `category` (string)
-  - `inStock` (boolean)
-- Implement the following RESTful routes:
-  - `GET /api/products`: List all products
-  - `GET /api/products/:id`: Get a specific product by ID
-  - `POST /api/products`: Create a new product
-  - `PUT /api/products/:id`: Update an existing product
-  - `DELETE /api/products/:id`: Delete a product
+- CRUD operations on products
+- Filtering, searching, and pagination
+- Product statistics by category
+- Middleware for logging, authentication, and validation
+- Comprehensive error handling
 
-### Task 3: Middleware Implementation
-- Create a custom logger middleware that logs the request method, URL, and timestamp
-- Implement a middleware to parse JSON request bodies
-- Create an authentication middleware that checks for an API key in the request headers
-- Add validation middleware for the product creation and update routes
+---
 
-### Task 4: Error Handling
-- Implement global error handling middleware
-- Create custom error classes for different types of errors (e.g., NotFoundError, ValidationError)
-- Add proper error responses with appropriate HTTP status codes
-- Handle asynchronous errors using try/catch blocks or a wrapper function
+## 🛠️ Technologies & Dependencies
+- Node.js (v18+)
+- Express.js
+- Mongoose (for MongoDB)
+- body-parser
+- uuid (for generating unique IDs)
 
-### Task 5: Advanced Features
-- Implement query parameters for filtering products by category
-- Add pagination support for the product listing endpoint
-- Create a search endpoint that allows searching products by name
-- Implement route for getting product statistics (e.g., count by category)
+---
 
-## 🧪 Expected Outcome
-- A fully functional Express.js API with proper RESTful routes
-- Well-structured middleware for logging, authentication, and validation
-- Comprehensive error handling with appropriate status codes and messages
-- Advanced features like filtering, pagination, and search
+## ⚡ Setup Instructions
 
-## 🛠️ Setup
-1. Make sure you have Node.js installed (v18 or higher recommended)
-2. Use the provided `server.js` file as a starting point
-3. Install the required dependencies:
-   ```
-   npm install express body-parser uuid
-   ```
-4. For testing your API, you can use tools like Postman, Insomnia, or curl
+1. Clone the repository:
 
-## ✅ Submission Instructions
-1. Accept the GitHub Classroom assignment invitation
-2. Clone your personal repository that was created by GitHub Classroom
-3. Add the following files to your repository:
-   - All your project files (server.js, routes, middleware, etc.)
-   - A `README.md` file with:
-     - Instructions on how to run your server
-     - Documentation of your API endpoints
-     - Examples of requests and responses
-   - A `.env.example` file showing required environment variables
-4. Commit and push your changes to GitHub
-5. Your submission will be automatically graded based on the criteria in the autograding configuration
-6. The instructor will review your submission after the autograding is complete 
+```bash
+git clone <your-repo-url>
+cd <your-project-folder>
+
+---
+
+## 📄 Install Dependencies
+- npm install
+
+---
+
+## Set up environment variables:
+
+Create a .env file based on .env.example:
+
+PORT=3000
+API_KEY=your_api_key_here
+MONGO_URI=your_mongodb_connection_string
+
+
+##Start the server:
+
+npm start
+
+Server will run at http://localhost:3000
+
+## 📌 API Endpoints
+
+Products Resource
+Method	Endpoint	Description
+GET	/api/products	Get all products (supports filtering by category and pagination)
+GET	/api/products/:id	Get a specific product by ID
+POST	/api/products	Create a new product (requires validation & API key)
+PUT	/api/products/:id	Update an existing product (requires validation & API key)
+DELETE	/api/products/:id	Delete a product (requires API key)
+GET	/api/products/search?name=<name>	Search products by name
+GET	/api/products/stats	Get product statistics grouped by category
+
+## Query Parameters
+
+-Filtering by category:
+
+GET /api/products?category=categoryname
+
+
+## Pagination:
+
+GET /api/products?page=2&limit=5
+
+
+## Search by name:
+
+GET /api/products/search?name=nameofproduct
+
+
+🛡️ Middleware
+
+Logger: Logs request method, URL, and timestamp
+
+Authentication: Requires API key in headers for protected routes
+
+Validation: Ensures product data is valid for creation and update
+
+Error Handling: Handles NotFound, Validation, and server errors

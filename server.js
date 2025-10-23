@@ -1,18 +1,46 @@
 // server.js - Starter Express server for Week 2 assignment
+require('dotenv').config();
+console.log('Loaded API key:', process.env.API_KEY);
 
 // Import required modules
 const express = require('express');
+const app = express();
+
 const bodyParser = require('body-parser');
+//This line imports the UUID library, specifically the version 4 function, which generates random unique IDs
 const { v4: uuidv4 } = require('uuid');
 
-// Initialize Express app
-const app = express();
-const PORT = process.env.PORT || 3000;
+const dotenv = require('dotenv');
+
+//middleware
+const connectDB = require('./config/db');
+const logger = require('./middleware/logger'); //importing logger middleware
+const Authentication = require('./middleware/Authentication'); //importing authentication middleware
+const PORT = process.env.PORT || 5000;
+
+
+dotenv.config();
+//connect to database
+connectDB();
+
+
+//middleware : parse JSON
+app.use(express.json()); //to parse json data
 
 // Middleware setup
 app.use(bodyParser.json());
 
-// Sample in-memory products database
+app.use(logger); //use the logger middleware (This is a global middleware)
+//Routes
+app.use(Authentication); //use the authentication middleware (This is a global middleware)
+
+
+app.use('/api/products', require('./routes/productsRoutes')); //if the route starts with /products use the productsRoutes
+
+
+
+// Example route implementation for GET /api/products
+//Specifically for server.js
 let products = [
   {
     id: '1',
@@ -38,34 +66,21 @@ let products = [
     category: 'kitchen',
     inStock: false
   }
-];
-
-// Root route
-app.get('/', (req, res) => {
-  res.send('Welcome to the Product API! Go to /api/products to see all products.');
-});
-
-// TODO: Implement the following routes:
-// GET /api/products - Get all products
-// GET /api/products/:id - Get a specific product
-// POST /api/products - Create a new product
-// PUT /api/products/:id - Update a product
-// DELETE /api/products/:id - Delete a product
-
-// Example route implementation for GET /api/products
+]
 app.get('/api/products', (req, res) => {
   res.json(products);
 });
 
-// TODO: Implement custom middleware for:
-// - Request logging
-// - Authentication
-// - Error handling
 
-// Start the server
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+//middleware
+// Home route
+app.get('/', (req, res) => {
+  res.send('Welcome to the Products Home Page! Go to /api/products to see all products.');
 });
+
 
 // Export the app for testing purposes
 module.exports = app; 
+
+//set the port
+app.listen(process.env.PORT, () => console.log(`Server is running on http://localhost:${process.env.PORT}`));
